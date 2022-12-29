@@ -25,17 +25,22 @@ export const getEmpleadosId= async(req,res)=>{
 
 export const postEmpleados= async(req,res)=>{
 
-    const {id,name,salary} =req.body;
+    const {name,salary} =req.body;
      const query=`
-         call employeedAddOrEdit(?,?,?);
+         call employeedAddOrEdit(null,?,?);
      `
-     const [rows]= await mysqlConecction.query(query,[id,name,salary])
+     const [rows]= await mysqlConecction.query(query,[name,salary])
  
-     if (rows[0][0].id==null) {
-         res.json({Status:"falta id"})
+     if (rows[0][0].id===null) {
+         res.json({Status:`error al crear empleado`})
      }
      else{
-         res.json({Status:"empleado Guardado"})
+         res.json({
+            Status:"empleado Guardado",
+            id:rows[0][0].id,
+            name,
+            salary
+        })
          console.log(rows);
      }
  }

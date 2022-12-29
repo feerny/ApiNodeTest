@@ -1,5 +1,6 @@
 import Express  from 'express';
 import EmpleadosRutas from './routes/empleados.routes.js'
+import pongRutas from './routes/pong.routes.js'
 
 const app = Express()
 
@@ -13,6 +14,7 @@ app.use(Express.json());
 
 //routes
 app.use("/api/empleados",EmpleadosRutas)
+app.use("/api/extra",pongRutas)
 
 //server
 app.listen(app.get('port'),()=>{
