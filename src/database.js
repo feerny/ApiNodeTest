@@ -1,20 +1,11 @@
-const mysql=require('mysql')
+import {createPool} from 'mysql2/promise'
 
-const mysqlConecction=mysql.createConnection({
+
+export const mysqlConecction=createPool({
     host:'localhost',
     user:'root',
     password:'',
+    port:3306,
     database:'company'
 })
 
-mysqlConecction.connect(function(err){
-    if (err) {
-        console.log(err);
-        return;
-    }
-    else{
-        console.log("conectado");
-    }
-});
-
-module.exports = mysqlConecction;
