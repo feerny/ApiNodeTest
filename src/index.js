@@ -16,8 +16,8 @@ app.use(Express.json());
 app.use("/api/empleados",EmpleadosRutas)
 app.use("/api/extra",pongRutas)
 
+
 //server
 app.listen(app.get('port'),()=>{
     console.log("server on port ",app.get('port'));
 })
-
