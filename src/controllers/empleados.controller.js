@@ -7,7 +7,8 @@ export const getEmpleados = async (req,res)=>{
     if (rows.length!==0) {
         res.json(rows)
     }else{
-        console.log(rows);
+        res.json({Status:"empleados no encontrados"})
+        res.status(404)
     }
 }
 
@@ -18,8 +19,9 @@ export const getEmpleadosId= async(req,res)=>{
     if (rows.length!==0) {
         res.json(rows[0])
     }else{
+        res.status(404)
         res.json({Status:"empleado no encontrado"})
-        console.log(rows);
+     
     }
 }
 
@@ -32,6 +34,7 @@ export const postEmpleados= async(req,res)=>{
      const [rows]= await mysqlConecction.query(query,[name,salary])
  
      if (rows[0][0].id===null) {
+         res.status(500)
          res.json({Status:`error al crear empleado`})
      }
      else{
@@ -58,7 +61,7 @@ export const putEmpleados=async(req,res)=>{
         res.json({Status:`empleado ${id} Actualizado`})
     }else{
         res.json({Status:"empleado no Actualizado o no existente"})
-        console.log(rows);
+        res.Status(500)
     }
 }
 
@@ -71,6 +74,6 @@ export const deleteEmpleado=async(req,res)=>{
         res.json({Status:`empleado ${id} Eliminado`})
     }else{
         res.json({Status:"empleado no Eliminado o no existente"})
-        console.log(rows);
+        res.status(500)
     }
 }
