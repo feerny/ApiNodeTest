@@ -79,14 +79,10 @@ export const putEmpleados = async (req, res) => {
     const { id } = req.params
     const { name, salary } = req.body;
     const query = `
-    update employees
-    set 
-        name=?,
-        salary=?
-        where id =?;
+    call employeedAddOrEdit(?,?,?);
     `
     try {
-        const [rows] = await mysqlConecction.query(query, [name, salary,id])
+        const [rows] = await mysqlConecction.query(query, [id,name, salary])
         console.log(rows);
         if (rows.affectedRows !== 0) {
             return res.json({ Status: `empleado ${id} Actualizado` })
