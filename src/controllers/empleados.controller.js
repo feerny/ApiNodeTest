@@ -15,7 +15,7 @@ export const getEmpleados = async (req, res) => {
     } catch (error) {
         const errors = `${error}`;
         console.log(errors.split(" ").slice(1).join(" "));
-        return res.status(500).json({ message: `${errors}` })
+        return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
 }
@@ -38,7 +38,7 @@ export const getEmpleadosId = async (req, res) => {
     } catch (error) {
         const errors = `${error}`;
         console.log(errors.split(" ").slice(1).join(" "));
-        return res.status(500).json({ message: `${errors}` })
+        return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
 }
@@ -67,7 +67,7 @@ export const postEmpleados = async (req, res) => {
     } catch (error) {
         const errors = `${error}`;
         console.log(errors.split(" ").slice(1).join(" "));
-        return res.status(500).json({ message: `${errors}` })
+        return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
 
@@ -90,7 +90,7 @@ export const putEmpleados = async (req, res) => {
     } catch (error) {
         const errors = `${error}`;
         console.log(errors.split(" ").slice(1).join(" "));
-        return res.status(500).json({ message: `${errors}` })
+        return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 }
 
@@ -109,7 +109,7 @@ export const deleteEmpleado = async (req, res) => {
     } catch (error) {
         const errors = `${error}`;
         console.log(errors.split(" ").slice(1).join(" "));
-        return res.status(500).json({ message: `${errors}` })
+        return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
 }
