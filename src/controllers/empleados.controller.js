@@ -48,20 +48,19 @@ export const postEmpleados = async (req, res) => {
     try {
         const { name, salary } = req.body;
         const query = `
-        insert into employees(name,salary)
-        values(?,?);
+        call employeedAddOrEdit(?,?,?);
         `
-        const [rows] = await mysqlConecction.query(query, [name, salary])
+        const [rows] = await mysqlConecction.query(query, [0,name, salary])
         console.log(rows);
 
-        if (rows.id === null) {
+        if (rows[0][0].id === null || rows[0][0].id === 0) {
             return res.status(500).json({ Status: `error al crear empleado` })
 
         }
         else {
             return res.json({
                 Status: "empleado Guardado",
-                id: rows.insertId,
+                id: rows[0][0].id,
                 name,
                 salary
             })
