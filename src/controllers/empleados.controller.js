@@ -80,7 +80,7 @@ export const putEmpleados = async (req, res) => {
         call employeedAddOrEdit(?,?,?);
     `
     try {
-        const [rows] = await mysqlConecction.query(query, [id, name, salary])
+        const rows = await mysqlConecction.query(query, [id, name, salary])
         console.log(rows);
         if (rows[1].affectedRows !== 0) {
             return res.json({ Status: `empleado ${id} Actualizado` })
