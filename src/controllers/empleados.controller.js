@@ -48,18 +48,20 @@ export const postEmpleados = async (req, res) => {
     try {
         const { name, salary } = req.body;
         const query = `
-            call employeedAddOrEdit(null,?,?);
+        insert into employees(name,salary)
+        values(?,?);
         `
         const [rows] = await mysqlConecction.query(query, [name, salary])
+        console.log(rows);
 
-        if (rows[0][0].id === null) {
+        if (rows.id === null) {
             return res.status(500).json({ Status: `error al crear empleado` })
 
         }
         else {
             return res.json({
                 Status: "empleado Guardado",
-                id: rows[0][0].id,
+                id: rows.insertId,
                 name,
                 salary
             })
@@ -77,12 +79,16 @@ export const putEmpleados = async (req, res) => {
     const { id } = req.params
     const { name, salary } = req.body;
     const query = `
-        call employeedAddOrEdit(?,?,?);
+    update employees
+    set 
+        name=?,
+        salary=?
+        where id =?;
     `
     try {
-        const [rows] = await mysqlConecction.query(query, [id, name, salary])
+        const [rows] = await mysqlConecction.query(query, [name, salary,id])
         console.log(rows);
-        if (rows[1].affectedRows !== 0) {
+        if (rows.affectedRows !== 0) {
             return res.json({ Status: `empleado ${id} Actualizado` })
         } else {
             return res.status(500).json({ Status: "empleado no Actualizado o no existente" })
