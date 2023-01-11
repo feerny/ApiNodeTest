@@ -18,6 +18,7 @@ export const getEmpleadosId= async(req,res)=>{
     if (rows.length!==0) {
         res.json(rows[0])
     }else{
+        res.status(404)
         res.json({Status:"empleado no encontrado"})
         console.log(rows);
     }
