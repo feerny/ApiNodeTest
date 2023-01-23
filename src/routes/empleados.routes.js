@@ -14,4 +14,6 @@ router.put('/:id',putEmpleados)
 
 router.delete('/:id',deleteEmpleado)
 
+router.patch('/:id',putEmpleados)
+
 export default router;

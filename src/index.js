@@ -1,21 +1,7 @@
-import Express  from 'express';
-import EmpleadosRutas from './routes/empleados.routes.js'
-
-const app = Express()
-
-
-//settings
-app.set('port',process.env.PORT || 3000);
-
-//middelwares
-app.use(Express.json());
-
-
-//routes
-app.use("/api/empleados",EmpleadosRutas)
+import  app  from "./app.js";
+import { PORT } from "./config.js";
 
 //server
-app.listen(app.get('port'),()=>{
-    console.log("server on port ",app.get('port'));
+app.listen(PORT,()=>{
+    console.log("server on port ",PORT);
 })
-
