@@ -1,19 +1,21 @@
 
-import {Router}  from 'express';
+const  Router=require('express');
 const router = Router();
 //controladores
-import {getEmpleados,getEmpleadosId,postEmpleados,putEmpleados,deleteEmpleado} from '../controllers/empleados.controller.js'
+const Controllers =require('../controllers/empleados.controller.js')
 
-router.get('/',getEmpleados)
+const upload=require('../utils/multer.js');
 
-router.get('/:id',getEmpleadosId)
+router.get('/',Controllers.getEmpleados)
 
-router.post('/',postEmpleados)
+router.get('/:id',Controllers.getEmpleadosId)
 
-router.put('/:id',putEmpleados)
+router.post('/',upload.single("imagen"),Controllers.postEmpleados)
 
-router.delete('/:id',deleteEmpleado)
+router.put('/:id',Controllers.putEmpleados)
 
-router.patch('/:id',putEmpleados)
+router.delete('/:id',Controllers.deleteEmpleado)
 
-export default router;
+router.patch('/:id',Controllers.putEmpleados)
+
+module.exports= router;

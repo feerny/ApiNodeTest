@@ -1,16 +1,27 @@
-import { mysqlConecction } from '../database.js'
+const  mysqlConecction=require('../database.js')
 
+const cloudinary = require("cloudinary").v2;
 
-export const getEmpleados = async (req, res) => {
+module.exports={
+
+ getEmpleados : async(req, res) => {
 
     try {
         const [rows] = await mysqlConecction.query('select * from employees')
 
+        const bodyJson={
+            id:rows.id,
+            name:rows.name,
+            salary:rows.salary,
+            img:JSON.parse(rows.img)
+        }
+
         if (rows.length !== 0) {
-            return res.json(rows)
+            return res.json(bodyJson)
         } else {
             return res.status(404).json({ Status: "empleados no encontrados" })
 
+        
         }
     } catch (error) {
         const errors = `${error}`;
@@ -18,11 +29,11 @@ export const getEmpleados = async (req, res) => {
         return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
-}
+},
 
 
 
-export const getEmpleadosId = async (req, res) => {
+ getEmpleadosId : async (req, res) => {
 
     try {
         const { id } = req.params
@@ -41,16 +52,36 @@ export const getEmpleadosId = async (req, res) => {
         return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
-}
+},
 
-export const postEmpleados = async (req, res) => {
+ postEmpleados : async (req, res) => {
 
+    
     try {
         const { name, salary } = req.body;
+        if (!req.file) {
+            return res.status(500).json({ message: "porfavor suba una imagen"})
+        }
+
+        try {
+            var cloudinary_image=await cloudinary.uploader.upload(req.file.path,{
+                folder:'empleados',
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: error})
+        }
+
         const query = `
-        call employeedAddOrEdit(?,?,?);
+        call employeedAddOrEdit(?,?,?,?);
         `
-        const [rows] = await mysqlConecction.query(query, [0,name, salary])
+        const image={
+            public_id:cloudinary_image.public_id,
+            url:cloudinary_image.secure_url
+        }
+
+        const imageParse = JSON.stringify( image );
+        const [rows] = await mysqlConecction.query(query, [0,name, salary,imageParse])
         console.log(rows);
 
         if (rows[0][0].id === null || rows[0][0].id === 0) {
@@ -72,9 +103,9 @@ export const postEmpleados = async (req, res) => {
     }
 
 
-}
+},
 
-export const putEmpleados = async (req, res) => {
+ putEmpleados : async (req, res) => {
     const { id } = req.params
     const { name, salary } = req.body;
     const query = `
@@ -94,9 +125,9 @@ export const putEmpleados = async (req, res) => {
         console.log(errors.split(" ").slice(1).join(" "));
         return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
-}
+},
 
-export const deleteEmpleado = async (req, res) => {
+ deleteEmpleado: async(req, res) =>{
     try {
         const { id } = req.params
 
@@ -114,4 +145,4 @@ export const deleteEmpleado = async (req, res) => {
         return res.status(500).json({ message: `${errors.split(" ").slice(1).join(" ")}` })
     }
 
-}
+}}

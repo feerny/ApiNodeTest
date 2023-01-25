@@ -1,7 +1,8 @@
-import  app  from "./app.js";
-import { PORT } from "./config.js";
+const app=require("./app.js");
+const PORT=require('./config.js');
 
 //server
-app.listen(PORT,()=>{
-    console.log("server on port ",PORT);
+app.listen(PORT.PORT,()=>{
+    console.log("server on port ",PORT.PORT);
 })
+
