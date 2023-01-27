@@ -12,10 +12,10 @@ router.get('/:id',Controllers.getEmpleadosId)
 
 router.post('/',upload.single("imagen"),Controllers.postEmpleados)
 
-router.put('/:id',Controllers.putEmpleados)
+router.put('/:id',upload.single("imagen"),Controllers.putEmpleados)
 
 router.delete('/:id',Controllers.deleteEmpleado)
 
-router.patch('/:id',Controllers.putEmpleados)
+router.patch('/:id',upload.single("imagen"),Controllers.putEmpleados)
 
 module.exports= router;
