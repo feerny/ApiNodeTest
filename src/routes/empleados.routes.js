@@ -16,6 +16,6 @@ router.put('/:id',upload.single("imagen"),Controllers.putEmpleados)
 
 router.delete('/:id',Controllers.deleteEmpleado)
 
-router.patch('/:id',upload.single("imagen"),Controllers.putEmpleados)
+router.patch('/:id',upload.single("imagen"),Controllers.patchEmpleados)
 
 module.exports= router;
