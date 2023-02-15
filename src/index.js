@@ -1,4 +1,6 @@
 const app=require("./app.js");
+
+//llama constante de puerto 
 const PORT=require('./config.js');
 
 //server

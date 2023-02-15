@@ -7,13 +7,14 @@ module.exports= multer({
         let ext =path.extname(file.originalname);
 
         if (ext !== ".jpg" && ext !== ".png" && ext !==".jpeg") {
+
+            
             cb(
                 new Error(
                     "El archivo no es soportado, solo imagenes formato jpg, png y jpeg"
                 ),
                 false
             );
-            return;
         };
         cb(null,true)
     }

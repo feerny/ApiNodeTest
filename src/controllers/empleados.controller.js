@@ -131,10 +131,17 @@ module.exports = {
             const public_id = JSON.parse(data[0].img)
             const folder_id=public_id.public_id.split('/')
             const folder_rute=folder_id[0]+"/"+folder_id[1]
+            var cloudinary_image = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'empleados/'+name,
+            });
             const resultDeleteImg= await cloudinary.uploader.destroy(public_id.public_id);
-            const resultDeleteFolder= await cloudinary.api.delete_folder(folder_rute);
+            
+            if (req.body.name && req.body.name!==data[0].name) {
+                const resultDeleteFolder= await cloudinary.api.delete_folder(folder_rute);
+                console.log(resultDeleteFolder.deleted[0]);
+            }
             console.log(resultDeleteImg.result);
-            console.log(resultDeleteFolder.deleted[0]);
+            
             if (resultDeleteImg.result === "not found"){
                 return res.status(400).json({ message: "Please provide correct public_id" })
             }
@@ -142,9 +149,7 @@ module.exports = {
                 return res.status(400).json({ message: "Try again later."})
             }
             
-            var cloudinary_image = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'empleados/'+name,
-            });
+
         } catch (error) {
             console.log(error);
             return res.status(400).json({ message: error })
@@ -270,6 +275,22 @@ module.exports = {
     deleteEmpleado: async (req, res) => {
         try {
             const { id } = req.params
+            const [data] = await mysqlConecction.query('select * from employees where id=?', [id])
+            const public_id = JSON.parse(data[0].img)
+            const folder_id=public_id.public_id.split('/')
+            const folder_rute=folder_id[0]+"/"+folder_id[1];
+            console.log(public_id.public_id);
+            const resultDeleteImg= await cloudinary.uploader.destroy(public_id.public_id);
+            const resultDeleteFolder= await cloudinary.api.delete_folder(folder_rute);
+            console.log(resultDeleteFolder.deleted[0]);
+            console.log(resultDeleteImg.result);
+
+            if (resultDeleteImg.result === "not found"){
+                return res.status(400).json({ message: "Please provide correct public_id" })
+            }
+            if (resultDeleteImg.result !== "ok"){
+                return res.status(400).json({ message: "Try again later."})
+            }
 
             const [rows] = await mysqlConecction.query("delete from employees where id=?", [id])
 
